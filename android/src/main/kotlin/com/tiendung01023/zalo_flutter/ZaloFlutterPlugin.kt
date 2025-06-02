@@ -292,10 +292,12 @@ private object AppHelper {
                 context.packageName,
                 PackageManager.GET_SIGNATURES
             )
-            for (signature in info.signatures) {
-                val md = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                return Base64.encodeToString(md.digest(), Base64.DEFAULT)
+            info.signatures?.let {
+                for (signature in it) {
+                    val md = MessageDigest.getInstance("SHA")
+                    md.update(signature.toByteArray())
+                    return Base64.encodeToString(md.digest(), Base64.DEFAULT)
+                }
             }
             return ""
         } catch (e: PackageManager.NameNotFoundException) {
